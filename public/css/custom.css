@@ -1,0 +1,40 @@
+/*custom*/
+.dropdown-item-custom {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    text-decoration: none;
+}
+
+.dropdown-item-custom:focus,
+.dropdown-item-custom:hover {
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+}
+
+.dropdown-item-custom.active,
+.dropdown-item-custom:active {
+    color: rgba(255, 255, 255, 1);
+    text-decoration: none;
+}
+
+#logo {
+    max-height: 50px;
+    width: auto;
+}
+
+.transparent-div {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#form {
+    min-width: 600px;
+    max-width: 600px;
+}
