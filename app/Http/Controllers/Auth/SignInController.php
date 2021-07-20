@@ -19,14 +19,14 @@ class SignInController extends Controller
 
     public function signin(Request $request){
         $this->validate($request, [
-            'email' => 'required_without:student_id',
+            'email' => 'required',
             'password' => 'required',
         ]);
         Auth::attempt(['email' => $request->email, 'password' => $request->password]);
         if(!auth()->user())
             return back()->with('status', 'Account don\'t Exist');
 
-        return (auth()->user()->user_type == 'admin')? view('su.dashboard') : view('student.dashboard');
+        return (auth()->user()->user_type == 'admin')? redirect()->route('su.dashboard') : redirect()->route('student.dashboard');
     }
 
     public function signout(Request $request){

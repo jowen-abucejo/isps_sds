@@ -1,7 +1,8 @@
 @extends('layouts.layout')
 
 @section('content')
-    <div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4 bg-white text-center p-5 rounded shadow">
+<div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+    <div class="text-center p-5 rounded shadow mb-5 bg-light">
         <h4 class="mb-4">Reset Password</h4 > 
         @if (session('status'))
             <p class="alert-danger rounded p-1"> 
@@ -23,4 +24,5 @@
             <button type="submit" class="btn btn-success btn-block mt-4">Reset Password</button>         
         </form>
     </div> 
+</div>
 @endsection

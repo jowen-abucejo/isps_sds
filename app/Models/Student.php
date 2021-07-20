@@ -12,7 +12,7 @@ class Student extends Model
     protected $fillable = [
         'user_id',
         'student_id',
-        'course',
+        'course_id',
         'first_name',
         'middle_name',
         'last_name',
@@ -26,4 +26,8 @@ class Student extends Model
     public function scholarships(){
         return $this->hasMany(ScholarshipApplication::class);
     }
+
+    // public function course(){
+    //     return $this->hasOne(Course::class);
+    // }
 }

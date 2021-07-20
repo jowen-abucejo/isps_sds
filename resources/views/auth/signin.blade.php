@@ -1,7 +1,8 @@
 @extends('layouts.layout')
 
 @section('content')
-    <div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4 bg-white text-center p-5 rounded shadow">
+<div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+    <div class="bg-white text-center p-5 rounded shadow mb-4">
         <h4 class="mb-4">Sign in</h4 > 
         @if (session('status'))
             <p class="alert-danger rounded p-1"> 
@@ -45,4 +46,5 @@
 
         <a href="{{ route('password.request') }}" class="btn btn-link btn-sm mt-2 mb-0 ">Forgot Password</a>
     </div> 
+</div>
 @endsection

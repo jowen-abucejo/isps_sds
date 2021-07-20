@@ -47,4 +47,16 @@ class User extends Authenticatable implements MustVerifyEmail,CanResetPassword
     public function student(){
         return $this->hasOne(Student::class);
     }
+
+    public function isAdmin(){
+        if($this->user_type === 'admin')
+            return true;
+        return false;
+    }
+
+    public function isStudent(){
+        if($this->user_type === 'student')
+            return true;
+        return false;
+    }
 }

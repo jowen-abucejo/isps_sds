@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +14,8 @@ class PasswordController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest')->except('changeOwnPass', 'updateOwnPass');
+        $this->middleware(['auth', 'verified'])->only(['changeOwnPass', 'updateOwnPass']);
     }
 
     public function requestReset(){
@@ -31,7 +33,21 @@ class PasswordController extends Controller
         return view('verify.new-pass',['token' => $token]);
     }
 
+    public function changeOwnPass(){
+        return view('auth.change-pass');
+    }
+
+    public function updateOwnPass(Request $request){
+            $this->validate($request, [
+                'password' => 'required|confirmed',
+            ]);
+
+            User::find(auth()->user()->id)->update(['password' => Hash::make($request->password)]);
+            return back()->with('status', 'Password Update Success!');
+    }
+
     public function updatePass(Request $request){
+        
         $this->validate($request, [
             'token' => 'required',
             'email' => 'required|email',

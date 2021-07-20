@@ -17,7 +17,7 @@ class CreateStudentsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('student_id')->unique();
-            $table->string('course');
+            $table->foreignId('course_id');
             $table->string('first_name');
             $table->string('middle_name');
             $table->string('last_name');

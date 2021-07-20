@@ -28,6 +28,8 @@ class GoogleSignInController extends Controller
 
             if($findUser) {
                 Auth::login($findUser);
+                if($findUser->isAdmin())
+                    return redirect()->route('su.dashboard');
                 return redirect()->route('student.dashboard');
             } else {
                 $email = $user->getEmail();

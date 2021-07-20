@@ -1,7 +1,8 @@
 @extends('layouts.layout')
 
 @section('content')
-    <div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4 bg-white p-5 rounded text-center shadow">
+<div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+    <div class="bg-white p-5 rounded text-center shadow mb-5">
         <h4 class="mb-4">Sign up</h4 > 
         @if (session('status'))
             <p class="alert-danger rounded p-1"> {{ session('status') }} </p>    
@@ -56,4 +57,5 @@
             <button type="submit" class="btn btn-success btn-block mt-4">Sign up</button>
         </form>
     </div> 
+</div>
 @endsection

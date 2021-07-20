@@ -2,26 +2,14 @@
 
 @section('content')
 <div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-    <div class="p-5 rounded text-center shadow mb-5 bg-light">
+    <div class=" p-5 rounded text-center shadow mb-3 bg-light ">
         <h4 class="mb-4">Change Password</h4 > 
         @if (session('status'))
             <p class="alert-danger rounded p-1"> {{ session('status') }} </p>    
         @endif       
 
-        <form action="{{ route('password.update') }}" method="post" >
-            @csrf
-            <input type="hidden" name="token" value="{{ $token }}">
-            
-            <div class="input-group form-group mt-4 mb-0">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                </div>
-                <input type="email" name="email" id="email" placeholder="Email" class="form-control">
-            </div>
-            @error('email')
-                <p class="text-danger text-left mb-0 pb-0"><small> {{ $message }} </small></p>
-            @enderror
-            
+        <form action="{{ route('pass.update') }}" method="post" >
+            @csrf          
             <div class="input-group form-group mt-4 mb-0">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -44,5 +32,6 @@
             
             <button type="submit" class="btn btn-success btn-block mt-4">Change Password</button>
         </form>
-    </div> 
+    </div>
+</div>     
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmailController extends Controller
 {
@@ -15,7 +16,8 @@ class EmailController extends Controller
         $this->middleware('throttle:6,1')->only('emailVerificationResend');
     }
     public function index(){
-        return view('verify.verify-email');        
+        $courses = DB::table('courses')->where('status', 'ACTIVE')->get();
+        return view('verify.verify-email', ['courses'=> $courses]);        
     }
 
     public function emailVerified(EmailVerificationRequest $emailVerificationRequest){

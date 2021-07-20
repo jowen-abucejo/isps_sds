@@ -7,6 +7,9 @@ use App\Http\Controllers\Auth\SignInController;
 use App\Http\Controllers\Auth\SignUpController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Student\StudentDashboardController;
+use App\Http\Controllers\Su\AdminDashboardController;
+use App\Http\Controllers\Su\CourseController;
+use App\Http\Controllers\Su\ScholarshipController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +53,8 @@ Route::get('/forgot-password', [PasswordController::class, 'requestReset'])->nam
 Route::post('/forgot-password', [PasswordController::class, 'sendReset'])->name('password.email');
 Route::get('/reset-password/{token}', [PasswordController::class, 'newPass'])->name('password.reset');
 Route::post('/reset-password', [PasswordController::class, 'updatePass'])->name('password.update');
+Route::get('/auth/change-pass/', [PasswordController::class, 'changeOwnPass'])->name('pass.change');
+Route::post('/auth/change-pass', [PasswordController::class, 'updateOwnPass'])->name('pass.update');
 
 //----------------------Student Profile--------------------
 Route::get('/student/profile', [StudentController::class, 'index'])->name('student.profile');
@@ -57,6 +62,24 @@ Route::post('/student/profile', [StudentController::class, 'profile']);
 
 //----------------------Student Dashboard--------------------
 Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
-Route::post('/student/dashboard', [StudentDashboardController::class, 'save']);
+//Route::post('/student/dashboard', [StudentDashboardController::class, 'save']);
 
+//----------------------Student Scholarships--------------------
+Route::get('/student/scholarships', [StudentDashboardController::class, 'index'])->name('student.scholarships');
+//Route::post('/student/scholarships', [StudentDashboardController::class, 'save']);
+
+//----------------------Courses--------------------
+Route::get('/su/courses/{course_id?}', [CourseController::class, 'index'])->name('su.courses');
+Route::post('/su/courses', [CourseController::class, 'save']);
+Route::patch('/su/courses', [CourseController::class, 'changeStatus']);
+
+//----------------------Scholarships--------------------
+Route::get('/su/scholarships/{scholarship_id}', [ScholarshipController::class, 'index'])->name('su.scholarships');
+Route::post('/su/scholarships/{scholarship_id}', [ScholarshipController::class, 'save']);
+Route::patch('/su/scholarships/{scholarship_id}', [ScholarshipController::class, 'changeStatus']);
+
+//----------------------Admin Dashboard--------------------
+Route::get('/su/dashboard', [AdminDashboardController::class, 'index'])->name('su.dashboard');
+Route::post('/su/dashboard', [AdminDashboardController::class, 'save']);
+Route::patch('/su/dashboard', [AdminDashboardController::class, 'changeStatus']);
 
