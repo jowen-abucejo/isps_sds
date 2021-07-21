@@ -22,29 +22,7 @@ class CourseController extends Controller
     }
 
     public function save(Request $request){
-        if(!$request->toUpdate)  {  
-            $this->validate($request, [
-                'course_code' => [
-                    'required',
-                    'string',
-                    Rule::unique('courses')->where(function ($query) use ($request) {
-                        return $query
-                            ->where('course_code', strtoupper($request->course_code))
-                            ->where('major', strtoupper($request->major));
-                    }),
-                ],
-                'course_desc' => 'required|string',
-            ]);
-
-            Course::create([
-                'course_code' => strtoupper($request->course_code),
-                'course_desc' => strtoupper($request->course_desc),
-                'major' => strtoupper($request->major),
-            ]);
-
-            return redirect()->route('su.courses')->with('status', 'Course Registration Success!');
-        }    
-
+        $ignoreSelf = ($request->toUpdate)?? 0;
         $this->validate($request, [
             'course_code' => [
                 'required',
@@ -53,10 +31,23 @@ class CourseController extends Controller
                     return $query
                         ->where('course_code', strtoupper($request->course_code))
                         ->where('major', strtoupper($request->major));
-                })->ignore($request->toUpdate),
+                })->ignore($ignoreSelf),
             ],
             'course_desc' => 'required|string',
+        ], [
+            'course_code.unique' => 'Course already registered.',
         ]);
+
+        if($ignoreSelf === 0){
+            Course::create([
+                'course_code' => strtoupper($request->course_code),
+                'course_desc' => strtoupper($request->course_desc),
+                'major' => strtoupper($request->major),
+            ]);
+
+            return redirect()->route('su.courses')->with('status', 'Course Registration Success!');
+        }
+
         $success = DB::table('courses')->where('id', $request->toUpdate)->update([
             'course_code' => strtoupper($request->course_code),    
             'course_desc' => strtoupper($request->course_desc),    

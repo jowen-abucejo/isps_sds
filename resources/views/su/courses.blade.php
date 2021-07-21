@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="col-12 min-vh-100">
-    <div class="col-12 col-sm-10 offset-sm-1 col-md-6 offset-md-3 bg-light rounded shadow mb-4 text-center py-5">
+    <div class="col-12 col-sm-10 offset-sm-1 col-md-6 offset-md-3 bg-light rounded shadow mb-4 text-center p-5">
         <h4 class="mb-4">
             {{ ($read_course)? 'Update ' : 'Register New '  }} Course
         </h4 > 
@@ -45,7 +45,10 @@
                 <p class="text-danger text-left mb-0 pb-0"><small> {{ $message }} </small></p>
             @enderror
 
-            <button type="submit" class="btn btn-info btn-block mt-4">{{ ($read_course)? 'Update ' : 'Register'  }} Course</button>
+            <button type="submit" class="btn btn-block mt-4 {{ ($read_course)? 'btn-success' : 'btn-info' }}">{{ ($read_course)? 'Update ' : 'Register'  }} Course</button>
+            @if ($read_course)
+                <a href="{{ route('su.courses') }}" class="btn btn-block btn-info mt-4">Cancel Edit</a>
+            @endif
         </form>
     </div>
     <table class="table table-bordered table-hover text-center table-sm table-striped table-light">
@@ -76,7 +79,14 @@
                 <a href="{{ route('su.courses', ['course_id' => $course->id]) }}" class="btn btn-sm btn-info px-4"> EDIT </a>
                 </td>          
             </tr>      
-            @endforeach            
+            @endforeach    
+            <tr>
+                <td>
+                    @if (!$courses->count())
+                      <p class="d-block alert-warning">No Records Found</p>  
+                    @endif
+                </td>
+            </tr>        
         </tbody>
     </table>
 </div>

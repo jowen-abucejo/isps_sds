@@ -15,12 +15,12 @@ class CreateScholarshipsTable extends Migration
     {
         Schema::create('scholarships', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->string('scholarship');
+            $table->string('scholarship_code');
             $table->string('description');
             $table->string('type')->nullable();
-            $table->decimal('gpa_limit', 3, 2);
-            $table->decimal('lowest_grade', 3, 2);
+            $table->decimal('gpa_max', 3, 2)->default(1.00);
+            $table->decimal('gpa_min', 3, 2)->default(5.00);
+            $table->decimal('lowest_grade', 3, 2)->nullable();
             $table->string('active')->default('ACTIVE');
             $table->timestamps();
         });

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRequirementsTable extends Migration
+class CreateRequirementScholarshipTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateRequirementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('requirements', function (Blueprint $table) {
+        Schema::create('requirement_scholarship', function (Blueprint $table) {
             $table->id();
-            $table->string('document_name');
-            $table->string('status')->default('ACTIVE');
+            $table->foreignId('requirement_id');
+            $table->foreignId('scholarship_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateRequirementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requirements');
+        Schema::dropIfExists('requirement_scholarship');
     }
 }

@@ -12,11 +12,11 @@ class Course extends Model
     protected $fillable = [
         'course_code',
         'course_desc',
-        'status',
+        'active',
         'major',        
     ];
 
-    public function student(){
+    public function students(){
         return $this->hasMany(Student::class);
     }
 }

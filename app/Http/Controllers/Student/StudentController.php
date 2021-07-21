@@ -15,8 +15,8 @@ class StudentController extends Controller
         $this->middleware(['auth', 'verified', 'student']);   
     }
 
-    public function index(Request $request){
-        $courses = DB::table('courses')->where('status', 'ACTIVE')->get();
+    public function index(){
+        $courses = DB::table('courses')->where('active', 'ACTIVE')->get();
         return view('student.profile')->with('courses', $courses);        
     }
 
@@ -48,7 +48,7 @@ class StudentController extends Controller
                 'mobile' => $request->mobile,
                 'address' => strtoupper($request->address),
             ]);
-            $courses = DB::table('courses')->where('status', 'ACTIVE')->get();
+            $courses = DB::table('courses')->where('active', 'ACTIVE')->get();
             return back()->with([
                 'status' => 'Profile Update Success!',
                 'courses' => $courses,
@@ -78,7 +78,7 @@ class StudentController extends Controller
                 'mobile' => $request->mobile,
                 'address' => strtoupper($request->address),
             ]);
-            $courses = DB::table('courses')->where('status', 'ACTIVE')->get();
+            $courses = DB::table('courses')->where('active', 'ACTIVE')->get();
             return redirect()->route('student.profile')->with([
                 'status' => 'Student Profile Created!',
                 'courses' => $courses,

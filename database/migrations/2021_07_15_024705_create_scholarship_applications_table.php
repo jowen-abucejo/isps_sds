@@ -13,11 +13,16 @@ class CreateScholarshipApplicationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('applications', function (Blueprint $table) {
+        Schema::create('scholarship_applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id');
             $table->foreignId('scholarship_id');
-            $table->string('status')->default('pending');
+            $table->foreignId('student_id');
+            $table->integer('year_level');
+            $table->integer('sem');
+            $table->string('sy', 9);
+            $table->decimal('gpa', 3);
+            $table->decimal('lowest_grade', 3);
+            $table->string('status')->default('REQUIREMENTS FOR UPLOAD');
             $table->timestamps();
         });
     }

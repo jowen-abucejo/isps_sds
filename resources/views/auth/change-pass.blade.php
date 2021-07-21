@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('content')
-<div class="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+<div class="col-10 col-sm-8 col-md-6 col-xl-5">
     <div class=" p-5 rounded text-center shadow mb-3 bg-light ">
         <h4 class="mb-4">Change Password</h4 > 
         @if (session('status'))

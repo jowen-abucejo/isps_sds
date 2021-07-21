@@ -65,7 +65,7 @@ Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->
 //Route::post('/student/dashboard', [StudentDashboardController::class, 'save']);
 
 //----------------------Student Scholarships--------------------
-Route::get('/student/scholarships', [StudentDashboardController::class, 'index'])->name('student.scholarships');
+Route::get('/student/scholarships/{scholarship_id?}', [StudentDashboardController::class, 'showScholarships'])->name('student.scholarships');
 //Route::post('/student/scholarships', [StudentDashboardController::class, 'save']);
 
 //----------------------Courses--------------------
@@ -74,9 +74,9 @@ Route::post('/su/courses', [CourseController::class, 'save']);
 Route::patch('/su/courses', [CourseController::class, 'changeStatus']);
 
 //----------------------Scholarships--------------------
-Route::get('/su/scholarships/{scholarship_id}', [ScholarshipController::class, 'index'])->name('su.scholarships');
-Route::post('/su/scholarships/{scholarship_id}', [ScholarshipController::class, 'save']);
-Route::patch('/su/scholarships/{scholarship_id}', [ScholarshipController::class, 'changeStatus']);
+Route::get('/su/scholarships/{scholarship_id?}', [ScholarshipController::class, 'index'])->name('su.scholarships');
+Route::post('/su/scholarships/', [ScholarshipController::class, 'save']);
+Route::patch('/su/scholarships/', [ScholarshipController::class, 'changeStatus']);
 
 //----------------------Admin Dashboard--------------------
 Route::get('/su/dashboard', [AdminDashboardController::class, 'index'])->name('su.dashboard');

@@ -16,7 +16,7 @@ class EmailController extends Controller
         $this->middleware('throttle:6,1')->only('emailVerificationResend');
     }
     public function index(){
-        $courses = DB::table('courses')->where('status', 'ACTIVE')->get();
+        $courses = DB::table('courses')->where('active', 'ACTIVE')->get();
         return view('verify.verify-email', ['courses'=> $courses]);        
     }
 

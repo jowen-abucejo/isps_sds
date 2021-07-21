@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>CvSU-Naic ISPS-SDS Portal</title>
+        <title>{{ config('app.name ') }}</title>
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -30,7 +30,7 @@
             <div class="collapse navbar-collapse d-sm-flex justify-content-sm-between @auth justify-content-lg-end @endauth" id="navbarToggler">
                 <ul class="navbar-nav nav-fill">
                     <li class="nav-item">
-                        <a href="{{ route('home') }}" class="nav-link px-2  @if(Route::currentRouteName()== 'home') active @endif "> Home </a>
+                        <a href="{{ route('home') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'home') active @endif "> Home </a>
                     </li>
                     <li class="nav-item px-2">
                         <a class="nav-link" href="#">Menu</a>
@@ -81,16 +81,16 @@
             <div class="mb-5 pb-4">
             </div>
             
-            @if (auth()->user()->user_type === "admin")
+            @if (auth()->user()->isAdmin())
             <p class="text-center bg-dark text-light m-0 pt-5"><span class="fas fa-user-tie fa-5x"></span></p>
             <p class="text-center bg-dark text-light m-0 ">{{ auth()->user()->name }}</p>
-            <p class="text-center bg-dark text-light m-0 pb-5">Admin</small></small>
+            <p class="text-center bg-dark text-light m-0 pb-5"><small>Admin</small></p>
             @else
             <p class="text-center bg-dark text-light m-0 pt-5"><span class="fas fa-user-graduate fa-5x"></span></p>
             @if (auth()->user()->student)
             <p class="text-center bg-dark text-light m-0">{{ auth()->user()->student->first_name }}</p>
-            <p class="text-center bg-dark text-light m-0 pb-5"><small>{{ auth()->user()->student->course }}</small></small>
-            @else
+            <p class="text-center bg-dark text-light m-0 pb-5"><small>{{ auth()->user()->student->course->course_desc }}</small></small>
+            @else 
             <p class="text-center bg-dark text-light m-0 pb-5">{{ auth()->user()->name }}</p>
             @endif  
             @endif
@@ -98,39 +98,39 @@
             <nav class="navbar navbar-expand-sm navbar-dark bg-secondary border-bottom d-lg-flex justify-content-center h-100 overflow-auto">
                 <ul class="navbar-nav nav-fill flex-lg-column align-self-start">
                     @if (auth()->user()->hasVerifiedEmail())
+                    @if (auth()->user()->isAdmin())
+                    <li class="nav-item">
+                        <a href="{{ route('su.dashboard') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.dashboard') active @endif ">Home</a>
+                    </li>
 
-                    @if (auth()->user()->user_type === 'admin')
-                    <li class="nav-item">
-                        <a href="{{ route('su.dashboard') }}" class="nav-link px-2  @if(Route::currentRouteName()== 'su.dashboard') active @endif ">Home</a>
-                    </li>
                     {{-- <li class="nav-item">
-                        <a href="{{ route('su.fhe') }}" class="nav-link px-2  @if(Route::currentRouteName()== 'su.fhe') active @endif "> Profile </a>
+                        <a href="{{ route('su.fhe') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.fhe') active @endif "> Profile </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('su.tes') }}" class="nav-link px-2  @if(Route::currentRouteName()== 'su.tes') active @endif "> My Scholarships </a>
+                        <a href="{{ route('su.tes') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.tes') active @endif "> My Scholarships </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('su.uscholars') }}" class="nav-link px-2  @if(Route::currentRouteName()== 'su.uscholars') active @endif "> Dashboard </a>
+                        <a href="{{ route('su.uscholars') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.uscholars') active @endif "> Dashboard </a>
                     </li> --}}
                     <li class="nav-item">
-                        <a href="{{ route('su.courses') }}" class="nav-link px-2  @if(Route::currentRouteName()== 'su.courses') active @endif ">CvSU-Naic Program</a>
+                        <a href="{{ route('su.courses') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.courses') active @endif ">CvSU-Naic Program Registry</a>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a href="{{ route('su.registry') }}" class="nav-link px-2  @if(Route::currentRouteName()== 'su.registry') active @endif "> My Scholarships </a>
-                    </li> --}}
+                    <li class="nav-item">
+                        <a href="{{ route('su.scholarships') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.scholarships') active @endif ">Scholarships</a>
+                    </li>
                     @else
                     <li class="nav-item">
-                        <a href="{{ route('student.dashboard') }}" class="nav-link px-2  @if(Route::currentRouteName()== 'student.dashboard') active @endif "> Dashboard </a>
+                        <a href="{{ route('student.dashboard') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'student.dashboard') active @endif "> Dashboard </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('student.profile') }}" class="nav-link px-2  @if(Route::currentRouteName()== 'student.profile') active @endif "> Profile </a>
+                        <a href="{{ route('student.profile') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'student.profile') active @endif "> Profile </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('student.scholarships') }}" class="nav-link px-2  @if(Route::currentRouteName()== 'student.scholarships') active @endif "> My Scholarships </a>
+                        <a href="{{ route('student.scholarships') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'student.scholarships') active @endif "> My Scholarships </a>
                     </li>
                     @endif
                     <li class="nav-item">
-                        <a href="{{ route('pass.change') }}" class="nav-link px-2 @if(Route::currentRouteName()== 'student.scholarships') active @endif">Change Password</a>
+                        <a href="{{ route('pass.change') }}" class="nav-link px-2 @if(Route::currentRouteName() == 'pass.change') active @endif">Change Password</a>
                     </li> 
                     @endif
                     <li class="nav-item">

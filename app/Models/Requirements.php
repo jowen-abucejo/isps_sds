@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Requirements extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'document_name',
+        'status',
+    ];
+    
+    public function scholarships()
+    {
+        return $this->belongsToMany(Scholarship::class);
+    }
 }

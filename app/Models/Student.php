@@ -27,7 +27,8 @@ class Student extends Model
         return $this->hasMany(ScholarshipApplication::class);
     }
 
-    // public function course(){
-    //     return $this->hasOne(Course::class);
-    // }
+    public function course(){
+        return $this->belongsTo(Course::class);
+    }
+    
 }
