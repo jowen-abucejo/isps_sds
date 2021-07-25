@@ -1,8 +1,6 @@
-@extends('layouts.layout')
+@extends('layouts.mainview')
 
-@section('content')
-<div class="col-12 min-vh-100">
-    <div class="col-12 col-sm-10 offset-sm-1 col-md-6 offset-md-3 bg-light rounded shadow mb-4 text-center p-5">
+@section('active_view')
         <h4 class="mb-4">
             {{ ($read_sch)? 'Update ' : 'Offer New '  }} Scholarship
         </h4 >  
@@ -49,7 +47,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-pen"></i></span>
                 </div>
-                <input type="number" step="0.01" name="gpa_min" id="gpa_min" placeholder="Minimum GPA" class="form-control" value="{{ ($read_sch)?$read_sch->gpa_min : old('gpa_min') }}">
+                <input type="number" min="1.00" max="5.00" step="0.01" name="gpa_min" id="gpa_min" placeholder="Minimum GPA" class="form-control" value="{{ ($read_sch)?$read_sch->qualification->gpa_min : old('gpa_min') }}">
             </div>
             @error('gpa_min')
                 <p class="text-danger text-left mb-0 pb-0"><small> {{ $message }} </small></p>
@@ -59,7 +57,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-pen"></i></span>
                 </div>
-                <input type="number" step="0.01" name="gpa_max" id="gpa_max" placeholder="Maximum GPA" class="form-control" value="{{ ($read_sch)?$read_sch->gpa_max : old('gpa_max') }}">
+                <input type="number" min="1.00" max="5.00" step="0.01" name="gpa_max" id="gpa_max" placeholder="Maximum GPA" class="form-control" value="{{ ($read_sch)?$read_sch->qualification->gpa_max : old('gpa_max') }}">
             </div>
             @error('gpa_max')
                 <p class="text-danger text-left mb-0 pb-0"><small> {{ $message }} </small></p>
@@ -69,18 +67,40 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-pen"></i></span>
                 </div>
-                <input type="number" step="0.01" name="lowest_grade" id="lowest_grade" placeholder="Lowest Grade Required" class="form-control" value="{{ ($read_sch)?$read_sch->lowest_grade : old('lowest_grade') }}">
+                <input type="number" step="0.01" name="lowest_grade" id="lowest_grade" placeholder="Lowest Grade Required" class="form-control" value="{{ ($read_sch)?$read_sch->qualification->lowest_grade : old('lowest_grade') }}">
             </div>
             @error('lowest_grade')
                 <p class="text-danger text-left mb-0 pb-0"><small> {{ $message }} </small></p>
             @enderror
+
+            <div class="input-group form-group mt-4 mb-4">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-pen"></i></span>
+                </div>
+                <input type="number" step="1" name="minimum_units" min="0" id="minimum_units" placeholder="Minimum Units" class="form-control" value="{{ ($read_sch)?$read_sch->qualification->minimum_units : old('minimum_units') }}">
+            </div>
+            @error('minimum_units')
+                <p class="text-danger text-left mb-0 pb-0"><small> {{ $message }} </small></p>
+            @enderror
+
+            <div class="form-group form-check-inline">
+                <input name="allow_inc" type="checkbox" class="form-check-input" id="allow_inc" @if($read_sch) {{ ($read_sch->qualification->allow_inc)? 'checked': '' }} @else {{ (old('allow_inc'))? 'checked' : '' }} @endif>
+                <label class="form-check-label" for="allow_inc">Allow INC grades</label>
+            </div>
+            
+            <div class="form-group form-check-inline">
+                <input name="allow_drop" type="checkbox" class="form-check-input" id="allow_drop" @if($read_sch) {{ ($read_sch->qualification->allow_drop)? 'checked': '' }} @else {{ (old('allow_drop'))? 'checked' : '' }} @endif>
+                <label class="form-check-label" for="allow_drop">Allow DROP grades</label>
+            </div>
 
             <button type="submit" class="btn btn-block mt-4 {{ ($read_sch)? 'btn-success' : 'btn-info'}}">{{ ($read_sch)? 'Update ' : 'Register'  }} Scholarship</button>
             @if ($read_sch)
             <a href="{{ route('su.scholarships') }}" class="btn btn-block btn-info mt-4">Cancel Edit</a>
             @endif
         </form>
-    </div>
+@endsection
+@section('bottom_view')
+
     <div class="table-responsive m-0 p-0 mb-5">
     <table class="table table-bordered table-hover text-center table-sm table-striped table-light">
         <thead>
@@ -88,9 +108,6 @@
                 <th>Code</th> 
                 <th>Description</th> 
                 <th>Type</th> 
-                <th>Min GPA</th>
-                <th>Max GPA</th>
-                <th>Lowest Grade</th>
                 <th>Status</th> 
                 <th>Action</th>
             </tr>
@@ -101,9 +118,6 @@
                 <td>{{ $scholarship->scholarship_code }}</td>
                 <td>{{ $scholarship->description }}</td>
                 <td>{{ $scholarship->type }}</td>
-                <td>{{ $scholarship->gpa_min }}</td>
-                <td>{{ $scholarship->gpa_max }}</td>
-                <td>{{ $scholarship->lowest_grade }}</td>
                 <td>{{ $scholarship->active }}</td>
                 <td>
                 <form action="{{ route('su.scholarships') }}" method="post" class="btn btn-sm">
@@ -118,7 +132,7 @@
             </tr>      
             @endforeach   
             <tr>
-                <td colspan="9">
+                <td colspan="5">
                     @if (!$scholarships->count())
                       <p class="d-block alert-warning">No Records Found</p>  
                     @endif
@@ -126,8 +140,4 @@
             </tr>         
         </tbody>
     </table>
-    </div>
-</div>
-
-
 @endsection

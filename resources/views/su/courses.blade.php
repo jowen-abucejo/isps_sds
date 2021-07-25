@@ -1,8 +1,6 @@
-@extends('layouts.layout')
+@extends('layouts.mainview')
 
-@section('content')
-<div class="col-12 min-vh-100">
-    <div class="col-12 col-sm-10 offset-sm-1 col-md-6 offset-md-3 bg-light rounded shadow mb-4 text-center p-5">
+@section('active_view')
         <h4 class="mb-4">
             {{ ($read_course)? 'Update ' : 'Register New '  }} Course
         </h4 > 
@@ -50,7 +48,8 @@
                 <a href="{{ route('su.courses') }}" class="btn btn-block btn-info mt-4">Cancel Edit</a>
             @endif
         </form>
-    </div>
+@endsection
+@section('bottom_view')
     <table class="table table-bordered table-hover text-center table-sm table-striped table-light">
         <thead>
             <tr>
@@ -81,7 +80,7 @@
             </tr>      
             @endforeach    
             <tr>
-                <td>
+                <td colspan="5">
                     @if (!$courses->count())
                       <p class="d-block alert-warning">No Records Found</p>  
                     @endif
@@ -89,7 +88,4 @@
             </tr>        
         </tbody>
     </table>
-</div>
-
-
 @endsection

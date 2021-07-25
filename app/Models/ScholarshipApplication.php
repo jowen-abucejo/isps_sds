@@ -17,6 +17,9 @@ class ScholarshipApplication extends Model
         'sy',
         'gpa',
         'lowest_grade', 
+        'num_of_units',
+        'has_inc',
+        'has_drop',
         'status',
     ];
     
@@ -28,5 +31,9 @@ class ScholarshipApplication extends Model
     public function student()
     {
         return $this->belongsTo(Student::class);
+    }
+
+    public function submitted_documents(){
+        return $this->hasMany(SubmittedDocument::class);
     }
 }

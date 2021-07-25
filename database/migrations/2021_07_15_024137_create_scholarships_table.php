@@ -18,9 +18,6 @@ class CreateScholarshipsTable extends Migration
             $table->string('scholarship_code');
             $table->string('description');
             $table->string('type')->nullable();
-            $table->decimal('gpa_max', 3, 2)->default(1.00);
-            $table->decimal('gpa_min', 3, 2)->default(5.00);
-            $table->decimal('lowest_grade', 3, 2)->nullable();
             $table->string('active')->default('ACTIVE');
             $table->timestamps();
         });

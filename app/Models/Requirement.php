@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Requirements extends Model
+class Requirement extends Model
 {
     use HasFactory;
 
@@ -16,6 +16,6 @@ class Requirements extends Model
     
     public function scholarships()
     {
-        return $this->belongsToMany(Scholarship::class);
+        return $this->belongsToMany(Scholarship::class, 'requirement_scholarship', 'scholarship_id', 'requirement_id')->withTimestamps();
     }
 }

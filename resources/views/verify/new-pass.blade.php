@@ -44,5 +44,6 @@
             
             <button type="submit" class="btn btn-success btn-block mt-4">Change Password</button>
         </form>
-    </div> 
+    </div>
+</div> 
 @endsection

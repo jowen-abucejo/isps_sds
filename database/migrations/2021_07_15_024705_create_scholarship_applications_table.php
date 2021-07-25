@@ -22,7 +22,10 @@ class CreateScholarshipApplicationsTable extends Migration
             $table->string('sy', 9);
             $table->decimal('gpa', 3);
             $table->decimal('lowest_grade', 3);
-            $table->string('status')->default('REQUIREMENTS FOR UPLOAD');
+            $table->integer('num_of_units');
+            $table->boolean('has_inc');
+            $table->boolean('has_drop');
+            $table->string('status', 30)->default('REQUIREMENTS FOR UPLOAD');
             $table->timestamps();
         });
     }

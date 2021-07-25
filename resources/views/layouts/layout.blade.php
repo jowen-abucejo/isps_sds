@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ config('app.name ') }}</title>
+        <title>{{ config('app.name') }}</title>
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -118,6 +118,12 @@
                     <li class="nav-item">
                         <a href="{{ route('su.scholarships') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.scholarships') active @endif ">Scholarships</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('su.requirements') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.requirements') active @endif ">Requirements</a>
+                    </li>
+                    <li class="nav-item">
+                        {{-- <a href="{{ route('su.downloadables') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.downloadables') active @endif ">Downloadables</a> --}}
+                    </li>
                     @else
                     <li class="nav-item">
                         <a href="{{ route('student.dashboard') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'student.dashboard') active @endif "> Dashboard </a>
@@ -157,5 +163,6 @@
                 @yield('content')            
             </div>
         </div>
+        @yield('js_area')
     </body>
 </html>

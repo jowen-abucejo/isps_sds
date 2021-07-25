@@ -1,7 +1,5 @@
-@extends('layouts.layout')
+@extends('layouts.mainview')
 
-@section('content')
-<div class="col-lg-2 bg-danger d-flex ">
-    f
-</div>    
+@section('active_view')
+  
 @endsection

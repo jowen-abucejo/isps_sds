@@ -30,7 +30,11 @@ class Scholarship extends Model
 
     public function requirements()
     {
-        return $this->belongsToMany(Requirements::class);
+        return $this->belongsToMany(Requirement::class, 'requirement_scholarship', 'requirement_id', 'scholarship_id')->withTimestamps();
+    }
+
+    public function qualification(){
+        return $this->hasOne(Qualification::class);
     }
 
 }
