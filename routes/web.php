@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\GoogleSignInController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\SignInController;
 use App\Http\Controllers\Auth\SignUpController;
+use App\Http\Controllers\DownloadableController;
+use App\Http\Controllers\ScholarshipApplicationController;
 use App\Http\Controllers\Student\ApplicationFormController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Student\StudentDashboardController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\Su\AdminDashboardController;
 use App\Http\Controllers\Su\CourseController;
 use App\Http\Controllers\Su\RequirementController;
 use App\Http\Controllers\Su\ScholarshipController;
+use App\Models\Downloadable;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +61,8 @@ Route::post('/reset-password', [PasswordController::class, 'updatePass'])->name(
 Route::get('/auth/change-pass/', [PasswordController::class, 'changeOwnPass'])->name('pass.change');
 Route::post('/auth/change-pass', [PasswordController::class, 'updateOwnPass'])->name('pass.update');
 
+
+//-------------------------------------STUDENT--------------------------------------------
 //----------------------Student Profile--------------------
 Route::get('/student/profile', [StudentController::class, 'index'])->name('student.profile');
 Route::post('/student/profile', [StudentController::class, 'profile']);
@@ -68,13 +73,19 @@ Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->
 
 //----------------------Student Scholarships--------------------
 Route::get('/student/scholarships/{scholarship_id?}', [StudentDashboardController::class, 'showScholarships'])->name('student.scholarships');
-Route::post('/student/scholarships', [StudentDashboardController::class, 'saveApplication']);
-Route::get('/student/scholarships/applications/app-form', [StudentDashboardController::class, 'showAppForm'])->name('student.appform');
+Route::post('/student/scholarships', [ScholarshipApplicationController::class, 'saveApplication']);
 
 //----------------------Student Requirements--------------------
-Route::get('/student/requirements/{sch_id?}', [StudentDashboardController::class, 'requestRequirements'])->name('student.requirements');
-Route::post('/student/requirements', [StudentDashboardController::class, 'uploadRequirements']);
+Route::get('/student/requirements/{sch_id?}', [ScholarshipApplicationController::class, 'requestRequirements'])->name('student.requirements');
+Route::post('/student/requirements', [ScholarshipApplicationController::class, 'uploadRequirements']);
 
+//----------------------Student Downloadables--------------------
+Route::get('/student/downloadables/{downloadable_id?}', [DownloadableController::class, 'index'])->name('student.downloadables');
+//Route::post('/student/requirements', [DownloadableController::class, 'download']);
+Route::get('/downloadables/preview/{downloadable_id}', [DownloadableController::class, 'preview'])->name('downloadables.preview');
+Route::get('/downloadables/download/{downloadable_id}', [DownloadableController::class, 'download'])->name('downloadables.download');
+
+//-------------------------------------ADMIN--------------------------------------------
 //----------------------Courses--------------------
 Route::get('/su/courses/{course_id?}', [CourseController::class, 'index'])->name('su.courses');
 Route::post('/su/courses', [CourseController::class, 'save']);
@@ -91,7 +102,7 @@ Route::post('/su/dashboard', [AdminDashboardController::class, 'save']);
 Route::patch('/su/dashboard', [AdminDashboardController::class, 'changeStatus']);
 
 //----------------------Application Form--------------------
-Route::get('/app-form-preview', [ApplicationFormController::class, 'createPDF'])->name('su.appform');
+// Route::get('/app-form-preview', [ApplicationFormController::class, 'createPDF'])->name('su.appform');
 // Route::post('/su/dashboard', [AdminDashboardController::class, 'save']);
 // Route::patch('/su/dashboard', [AdminDashboardController::class, 'changeStatus']);
 
@@ -100,3 +111,13 @@ Route::get('/su/requirements/{requirement_id?}', [RequirementController::class, 
 Route::post('/su/requirements', [RequirementController::class, 'save']);
 Route::patch('/su/requirements', [RequirementController::class, 'changeStatus']);
 
+//------------------------Downloadables------------------------
+Route::get('/su/downloadables/{downloadable_id?}', [DownloadableController::class, 'show'])->name('su.downloadables');
+Route::post('/su/downloadables', [DownloadableController::class, 'save']);
+Route::patch('/su/downloadables', [DownloadableController::class, 'delete']);
+
+//-------------------------Admin Manage Scholarship Application-------------------
+Route::get('/su/manage/{scholarship_code}/{application_id?}', [ScholarshipApplicationController::class, 'index'])->name('su.manage');
+Route::post('/su/manage/approve', [ScholarshipApplicationController::class, 'manageApplication'])->name('su.manage.approved');
+Route::patch('/su/manage', [ScholarshipApplicationController::class, 'delete']);
+Route::get('/su/preview/requirements/{application_id}/{document_id}', [ScholarshipApplicationController::class, 'preview'])->name('su.requirement.preview');

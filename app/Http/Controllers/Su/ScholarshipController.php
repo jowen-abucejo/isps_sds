@@ -17,7 +17,7 @@ class ScholarshipController extends Controller
 
     public function index(Request $request)
     {
-        $scholarships = Scholarship::get();
+        $scholarships = Scholarship::orderBy('description', 'asc')->get();
         $read_sch = $scholarships->where('id', $request->scholarship_id)->first();
         return view('su.scholarships', ['scholarships' => $scholarships, 'read_sch' => $read_sch]);
     }

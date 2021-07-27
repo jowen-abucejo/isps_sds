@@ -44,13 +44,17 @@ class User extends Authenticatable implements MustVerifyEmail,CanResetPassword
         'email_verified_at' => 'datetime',
     ];
 
+    public $to_manage;
+
     public function student(){
         return $this->hasOne(Student::class);
     }
 
     public function isAdmin(){
-        if($this->user_type === 'admin')
+        if($this->user_type === 'admin'){
+            $this->to_manage = Scholarship::select('scholarship_code', 'description')->orderBy('active', 'asc')->orderBy('description', 'asc')->orderBy('created_at', 'asc')->groupBy('scholarship_code')->groupBy('description')->get();
             return true;
+        }
         return false;
     }
 

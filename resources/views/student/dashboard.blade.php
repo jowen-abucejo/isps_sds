@@ -1,5 +1,8 @@
-@extends('layouts.mainview')
+@extends('layouts.layout')
 
-@section('active_view')
+@section('content')
+<div class="container-fluid bg-danger">
+dd
+</div>
   
 @endsection

@@ -3,12 +3,31 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Downloadable;
 use Illuminate\Http\Request;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfParser\StreamReader;
 
 class ApplicationFormController extends Controller
 {
+    public function preview(Request $request)
+    {
+        $pdf = new Fpdi();
+        $preview = Downloadable::where('id', $request->downloadable_id)->first();
+        $pdf->AddPage();
+        $path = 'storage/app/'.$preview->filename;
+        $fileContent = file_get_contents(asset('storage/app/downloadables/dFBus3rA6oInPK3NQrLgaw9r4MBrMiJE4sJMLA0N.pdf'));
+        $pdf->setSourceFile(StreamReader::createByString($fileContent));
+        $tmpl = $pdf->importPage(1);
+        $pdf->useTemplate($tmpl, 0, 0, 215.9, 355.6, true);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetXY(41, 57);
+        $pdf->MultiCell(32 , 7, 'OOOOOOOOOO', 1, 'C');  
+        // $pdf->useTemplate($tmpl, 0, 0);
+       // $pdf->Output();
+        return response($pdf->Output())->header('Content-Type', 'application/pdf');        
+
+    }
 
     public function createPDF(Request $request)
     {

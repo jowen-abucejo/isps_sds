@@ -13,10 +13,7 @@
                 <input type="hidden" name="toUpdate" value="{{ $read_req->id }}">
             @endif
             <div class="input-group form-group mt-4 mb-0">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-pen"></i></span>
-                </div>
-                <input type="text"  name="document_name" id="document_name" placeholder="Document Name" class="form-control" value="{{ ($read_req)?$read_req->document_name : old('document_name')}}">
+                <textarea class="form-control" id="document_name" name="document_name" rows="2" placeholder="Document Name">{{ ($read_req)?$read_req->document_name : old('document_name') }}</textarea>
             </div>
             @error('document_name')
                 <p class="text-danger text-left mb-0 pb-0"><small> {{ $message }} </small></p>
@@ -26,7 +23,7 @@
             <div class="input-group form-group mb-0">
                 @if($scholarships->count())
                 @foreach ($scholarships as $scholarship )
-                <div class="form-group form-check-inline">
+                <div class="form-group form-check-inline  text-left w-100 px-3">
                     <input name="required_for[]" type="checkbox" class="form-check-input" id="{{ $scholarship->scholarship_code }}{{ $scholarship->id }}" value="{{ $scholarship->id }}"@if($read_req) @if($read_req->scholarships->contains($scholarship->id)) checked @endif @endif>
                     <label class="form-check-label" for="{{ $scholarship->scholarship_code }}{{ $scholarship->id }}">{{ $scholarship->description }}  {{ $scholarship->type }}</label>
                 </div>
@@ -44,7 +41,6 @@
     <table class="table table-bordered table-hover text-center table-sm table-striped table-light">
         <thead>
             <tr>
-                <th>ID</th> 
                 <th>Document</th> 
                 <th>Required For</th> 
                 <th>Status</th>
@@ -55,7 +51,6 @@
             @if($requirements->count())
             @foreach ($requirements as $requirement)
             <tr>
-                <td>{{ $requirement->id }}</td>
                 <td>{{ $requirement->document_name }}</td>
                 <td>
                     @isset($requirement->scholarships)
@@ -79,7 +74,7 @@
             @endforeach  
             @endif  
             <tr>
-                <td colspan="5">
+                <td colspan="4">
                     @if (!$requirements->count())
                       <p class="d-block alert-warning">No Records Found</p>  
                     @endif

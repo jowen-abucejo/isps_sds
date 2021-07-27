@@ -15,7 +15,7 @@ class CourseController extends Controller
     }
 
     public function index(Request $request){
-        $courses = Course::get();
+        $courses = Course::orderBy('course_desc', 'asc')->get();
         $read_course = $courses->where('id',$request->course_id)->first();
         return view('su.courses', ['courses' => $courses, 'read_course' => $read_course]);
     }

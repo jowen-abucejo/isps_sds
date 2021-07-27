@@ -10,12 +10,15 @@ use Illuminate\Validation\Rule;
 
 class RequirementController extends Controller
 {
-    
+    public function __construct()
+    {
+        $this->middleware(['auth', 'verified', 'admin']);
+    }
     public function index(Request $request)
     {   
-        $requirements = Requirement::get();
+        $requirements = Requirement::orderBy('document_name', 'asc')->get();
         $read_req = $requirements->where('id', $request->requirement_id)->first();
-        $scholarships = Scholarship::where('active', 'ACTIVE')->get();
+        $scholarships = Scholarship::where('active', 'ACTIVE')->orderBy('description', 'asc')->get();
         return view('su.requirements',['requirements' => $requirements, 'read_req' => $read_req, 'scholarships' => $scholarships]);
     }
 
@@ -64,4 +67,5 @@ class RequirementController extends Controller
 
         return ($success)? back() : back()->with('status', 'Status Update Failed!');
     }
+
 }

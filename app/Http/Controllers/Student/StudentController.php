@@ -16,7 +16,7 @@ class StudentController extends Controller
     }
 
     public function index(){
-        $courses = DB::table('courses')->where('active', 'ACTIVE')->get();
+        $courses = DB::table('courses')->where('active', 'ACTIVE')->orderBy('course_desc', 'asc')->get();
         return view('student.profile')->with('courses', $courses);        
     }
 

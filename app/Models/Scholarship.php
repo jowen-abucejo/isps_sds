@@ -13,9 +13,6 @@ class Scholarship extends Model
         'scholarship_code',
         'description',
         'type',
-        'gpa_max',
-        'gpa_min',
-        'lowest_grade',
         'active',        
     ];
 

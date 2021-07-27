@@ -79,8 +79,7 @@
         @auth 
         <div class="fixed-top col-lg-3 d-none d-lg-flex flex-lg-column col-xl-2 p-2 vh-100">
             <div class="mb-5 pb-4">
-            </div>
-            
+            </div>   
             @if (auth()->user()->isAdmin())
             <p class="text-center bg-dark text-light m-0 pt-5"><span class="fas fa-user-tie fa-5x"></span></p>
             <p class="text-center bg-dark text-light m-0 ">{{ auth()->user()->name }}</p>
@@ -96,53 +95,65 @@
             @endif
 
             <nav class="navbar navbar-expand-sm navbar-dark bg-secondary border-bottom d-lg-flex justify-content-center h-100 overflow-auto">
-                <ul class="navbar-nav nav-fill flex-lg-column align-self-start">
+                <ul class="navbar-nav nav-fill flex-lg-column align-self-start" id="side_menus">
                     @if (auth()->user()->hasVerifiedEmail())
                     @if (auth()->user()->isAdmin())
+                    @php
+                        $to_manage = auth()->user()->to_manage;
+                    @endphp    
                     <li class="nav-item">
-                        <a href="{{ route('su.dashboard') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.dashboard') active @endif ">Home</a>
+                        <a href="{{ route('su.dashboard') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.dashboard') active @endif ">HOME</a>
                     </li>
-
-                    {{-- <li class="nav-item">
-                        <a href="{{ route('su.fhe') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.fhe') active @endif "> Profile </a>
+                    @for ($i = 0; $i<$to_manage->count() && $i<5; $i++)
+                    <li class="nav-item">
+                        <a href="{{ route('su.manage',['scholarship_code' => Str::lower(Str::replace(' ', '_', $to_manage->get($i)->scholarship_code)) ]) }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.manage' && $to_manage->get($i)->scholarship_code === str_replace('_', ' ', $scholarship_code) ) active @endif ">{{ $to_manage->get($i)->description }}</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('su.tes') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.tes') active @endif "> My Scholarships </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('su.uscholars') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.uscholars') active @endif "> Dashboard </a>
-                    </li> --}}
-                    <li class="nav-item">
-                        <a href="{{ route('su.courses') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.courses') active @endif ">CvSU-Naic Program Registry</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('su.scholarships') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.scholarships') active @endif ">Scholarships</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('su.requirements') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.requirements') active @endif ">Requirements</a>
-                    </li>
-                    <li class="nav-item">
-                        {{-- <a href="{{ route('su.downloadables') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.downloadables') active @endif ">Downloadables</a> --}}
-                    </li>
-                    @else
-                    <li class="nav-item">
-                        <a href="{{ route('student.dashboard') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'student.dashboard') active @endif "> Dashboard </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('student.profile') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'student.profile') active @endif "> Profile </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('student.scholarships') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'student.scholarships') active @endif "> My Scholarships </a>
+                    @endfor
+                    @if ($to_manage->count()>5)
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">MANAGE OTHERS</a>
+                        
+                        <div class="dropdown-menu bg-secondary shadow mw-100 text-wrap text-center">
+                            @for ($i = 4; $i<$to_manage->count(); $i++)
+                            <a href="{{ route('su.manage',['scholarship_code' => Str::lower(Str::replace(' ', '_', $to_manage->get($i)->scholarship_code))]) }}" class="dropdown-item-custom text-wrap small @if(Route::currentRouteName() == 'su.manage') active @endif ">{{ $to_manage->get($i)->description }}</a>
+                            @endfor
+                        </div>
                     </li>
                     @endif
                     <li class="nav-item">
-                        <a href="{{ route('pass.change') }}" class="nav-link px-2 @if(Route::currentRouteName() == 'pass.change') active @endif">Change Password</a>
+                        <a href="{{ route('su.courses') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'su.courses') active @endif ">CVSU-NAIC PROGRAM REGISTRY</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">SETTINGS</a>
+                        
+                        <div class="dropdown-menu bg-secondary shadow mw-100 text-wrap text-center">
+                            <a href="{{ route('su.scholarships') }}" class="dropdown-item-custom text-wrap small  @if(Route::currentRouteName() == 'su.scholarships') active @endif ">NEW SCHOLARSHIPS</a>
+                            <a href="{{ route('su.requirements') }}" class="dropdown-item-custom text-wrap small  @if(Route::currentRouteName() == 'su.requirements') active @endif ">ADD REQUIREMENTS</a>
+                            <a href="{{ route('su.downloadables') }}" class="dropdown-item-custom text-wrap small  @if(Route::currentRouteName() == 'su.downloadables') active @endif ">ADD DOWNLOADABLES</a>
+                        </div>
+                    </li>
+                    @else
+                    <li class="nav-item">
+                        <a href="{{ route('student.dashboard') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'student.dashboard') active @endif ">DASHBOARD</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.profile') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'student.profile') active @endif ">PROFILE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.scholarships') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'student.scholarships') active @endif ">MY SCHOLARSHIPS </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.downloadables') }}" class="nav-link px-2  @if(Route::currentRouteName() == 'student.downloadables') active @endif ">DOWNLOADABLES</a>
+                    </li>
+                    @endif
+                    <li class="nav-item">
+                        <a href="{{ route('pass.change') }}" class="nav-link px-2 @if(Route::currentRouteName() == 'pass.change') active @endif">CHANGE PASSWORD</a>
                     </li> 
                     @endif
                     <li class="nav-item">
                         <form action="{{ route('auth.signout') }}" method="post">
                             @csrf
-                            <button type="submit" class="nav-link px-2 bg-transparent border-0 mx-auto"> Sign out</button>
+                            <button type="submit" class="nav-link px-2 bg-transparent border-0 mx-auto"> SIGNOUT</button>
                         </form>
                     </li> 
                 </ul>   
