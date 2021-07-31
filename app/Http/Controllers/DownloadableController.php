@@ -43,19 +43,33 @@ class DownloadableController extends Controller
     public function save(Request $request)
     {
         $ignoreSelf = ($request->toUpdate)?? 0;
-        $this->validate($request, [
-            'document_name' => [
-                'required',
-                Rule::unique('downloadables')->where(function ($query) use ($request) {
-                    return $query
-                        ->where('document_name', $request->document_name);
-                })->ignore($ignoreSelf),
-            ],
-            'file' => 'required|file|mimes:pdf',
-        ], [
-            'file.mimes' => 'Uploaded file must be a PDF type',
-            'document_name.unique' => 'Document name already used.',
-        ]);
+        if($ignoreSelf && !$request->hasFile('file')){
+            $this->validate($request, [
+                'document_name' => [
+                    'required',
+                    Rule::unique('downloadables')->where(function ($query) use ($request) {
+                        return $query
+                            ->where('document_name', $request->document_name);
+                    })->ignore($ignoreSelf),
+                ],
+            ], [
+                'document_name.unique' => 'Document name already used.',
+            ]);
+        } else {
+            $this->validate($request, [
+                'document_name' => [
+                    'required',
+                    Rule::unique('downloadables')->where(function ($query) use ($request) {
+                        return $query
+                            ->where('document_name', $request->document_name);
+                    })->ignore($ignoreSelf),
+                ],
+                'file' => 'required|file|mimes:pdf',
+            ], [
+                'file.mimes' => 'Uploaded file must be a PDF type',
+                'document_name.unique' => 'Document name already used.',
+            ]);
+        }
 
         $path = 'downloadables';
         if($ignoreSelf === 0){
@@ -71,12 +85,19 @@ class DownloadableController extends Controller
 
         $to_update = Downloadable::where('id', $request->toUpdate)->first();
         if(!$to_update) return back()->with('status', 'The record to update don\'t exist');
-        Storage::delete($to_update->filename);
-        $storepath = Storage::putFile($path, $request->file('file', $request->document_name));
-        $to_update->update([
-            'document_name' => $request->document_name,
-            'filename' => $storepath,        
-        ]);
+        if($request->hasFile('file')){
+            Storage::delete($to_update->filename);
+            $storepath = Storage::putFile($path, $request->file('file', $request->document_name));
+            $to_update->update([
+                'document_name' => $request->document_name,
+                'filename' => $storepath,        
+            ]);
+        } else {
+            $to_update->update([
+                'document_name' => $request->document_name,
+            ]);
+        }
+        
         return back()->with('status', 'Document Update Success.');
     }
 

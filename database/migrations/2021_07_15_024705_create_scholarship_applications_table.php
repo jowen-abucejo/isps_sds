@@ -17,6 +17,7 @@ class CreateScholarshipApplicationsTable extends Migration
             $table->id();
             $table->foreignId('scholarship_id');
             $table->foreignId('student_id');
+            $table->foreignId('course_id');
             $table->integer('year_level');
             $table->integer('sem');
             $table->string('sy', 9);

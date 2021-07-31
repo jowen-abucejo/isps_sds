@@ -81,7 +81,6 @@ Route::post('/student/requirements', [ScholarshipApplicationController::class, '
 
 //----------------------Student Downloadables--------------------
 Route::get('/student/downloadables/{downloadable_id?}', [DownloadableController::class, 'index'])->name('student.downloadables');
-//Route::post('/student/requirements', [DownloadableController::class, 'download']);
 Route::get('/downloadables/preview/{downloadable_id}', [DownloadableController::class, 'preview'])->name('downloadables.preview');
 Route::get('/downloadables/download/{downloadable_id}', [DownloadableController::class, 'download'])->name('downloadables.download');
 
@@ -98,13 +97,6 @@ Route::patch('/su/scholarships/', [ScholarshipController::class, 'changeStatus']
 
 //----------------------Admin Dashboard--------------------
 Route::get('/su/dashboard', [AdminDashboardController::class, 'index'])->name('su.dashboard');
-Route::post('/su/dashboard', [AdminDashboardController::class, 'save']);
-Route::patch('/su/dashboard', [AdminDashboardController::class, 'changeStatus']);
-
-//----------------------Application Form--------------------
-// Route::get('/app-form-preview', [ApplicationFormController::class, 'createPDF'])->name('su.appform');
-// Route::post('/su/dashboard', [AdminDashboardController::class, 'save']);
-// Route::patch('/su/dashboard', [AdminDashboardController::class, 'changeStatus']);
 
 //----------------------Requirements--------------------
 Route::get('/su/requirements/{requirement_id?}', [RequirementController::class, 'index'])->name('su.requirements');

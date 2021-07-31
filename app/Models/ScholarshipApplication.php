@@ -12,6 +12,7 @@ class ScholarshipApplication extends Model
     protected $fillable = [
         'scholarship_id',
         'student_id',
+        'course_id',
         'year_level',
         'sem',
         'sy',
@@ -35,5 +36,10 @@ class ScholarshipApplication extends Model
 
     public function submitted_documents(){
         return $this->hasMany(SubmittedDocument::class);
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 }

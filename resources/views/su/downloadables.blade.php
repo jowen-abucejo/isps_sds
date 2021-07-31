@@ -2,7 +2,11 @@
 
 @section('active_view')
     <h4 class="mb-4">
-        Upload New Document
+        @if ($read_downloadable) 
+            Update
+        @else
+            Upload New
+        @endif Downloadable
     </h4 > 
     @if (session('status'))
         <p class="alert-danger rounded p-1"> {{ session('status') }} </p>    
@@ -22,12 +26,17 @@
         @enderror
         <div class="form-group text-left mb-3">
             <label for="file">Select File to Upload (PDF File only)</label>
-            <input type="file" name="file" id="file" class="form-control-file border" required>
+            <input type="file" name="file" id="file" class="form-control-file border">
         </div>
         @error('file')
             <p class="text-danger text-left mb-0 pb-0"><small> {{ $message }} </small></p>
         @enderror
+        @if ($read_downloadable) 
+        <button type="submit" class="btn btn-block mt-4 btn-success">Update Document</button>
+        <a class="btn btn-block btn-info mt-4" href="{{ route('su.downloadables') }}">Cancel Edit</a>
+        @else
         <button type="submit" class="btn btn-block mt-4 btn-info">Upload Document</button>
+        @endif
     </form>
 @endsection
 @section('bottom_view')

@@ -18,8 +18,8 @@ class CreateQualificationsTable extends Migration
             $table->foreignId('scholarship_id');
             $table->decimal('gpa_max', 3, 2)->default(1.00)->nullable();
             $table->decimal('gpa_min', 3, 2)->default(5.00)->nullable();
-            $table->decimal('lowest_grade', 3, 2)->nullable();
-            $table->integer('minimum_units')->nullable();
+            $table->decimal('lowest_grade', 3, 2)->default(5.00);
+            $table->integer('minimum_units')->default(0);
             $table->boolean('allow_drop', 10)->default(0);
             $table->boolean('allow_inc')->default(0);
             $table->timestamps();

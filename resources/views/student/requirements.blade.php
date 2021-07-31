@@ -25,11 +25,11 @@
         @endforeach
         @endif
         <button type="submit" class="btn btn-success btn-block mt-4">Upload Requirements</button>
-        <a href="{{ route('student.scholarships', ['scholarship_id' => $sch_id]) }}" class="btn btn-sm px-4 btn-info btn-block mt-4">BACK</a>
+        <a href="{{ route('student.scholarships', ['scholarship_id' => $sch_id]) }}" class="btn px-4 btn-info btn-block mt-4">Back</a>
     </form>
 @else 
     <h4>Requirements</h4>
-    <a href="{{ route('student.scholarships', ['scholarship_id' => $sch_id]) }}" class="btn btn-sm px-4 btn-info btn-block mt-4">Back</a>
+    <a href="{{ route('student.scholarships', ['scholarship_id' => $sch_id]) }}" class="btn px-4 btn-info btn-block mt-4">Back</a>
 @endif
 @endsection
 @section('bottom_view')

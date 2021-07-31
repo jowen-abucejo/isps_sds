@@ -15,6 +15,7 @@ class StudentDashboardController extends Controller
     }
 
     public function index(){
+        if(!auth()->user()->student) return redirect()->route('student.profile');
         return view('student.dashboard');
     }
 

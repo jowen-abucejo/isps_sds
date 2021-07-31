@@ -30,7 +30,7 @@
         <select name="course" id="course" class="form-control">
             <option value="">** Select Program/Course **</option>
             @foreach ($courses as $course )
-                <option value="{{ $course->id }}" @php if(auth()->user()->student) echo (auth()->user()->student->course_id == $course->id)? "selected" : "" @endphp>{{ str_replace(['Bachelor Of Science', ' Of ', ' In ', ' And '], ['BS', ' of ', ' in ', ' and '], Str::title($course->course_desc)) }} @if($course->major) - Major in {{ str_replace(['Bachelor Of Science', ' Of ', ' In ', ' And '], ['BS', ' of ', ' in ', ' and '], Str::title($course->major)) }} @endif</option>
+                <option value="{{ $course->id }}" @php if(auth()->user()->student) echo (auth()->user()->student->course_id == $course->id)? "selected" : "" @endphp>{{ str_replace(['Bachelor Of Science In ', ' Of ', ' In ', ' And '], ['BS ', ' of ', ' in ', ' and '], Str::title($course->course_desc)) }} @if($course->major) - Major in {{ str_replace(['Bachelor Of Science', ' Of ', ' In ', ' And '], ['BS', ' of ', ' in ', ' and '], Str::title($course->major)) }} @endif</option>
             @endforeach
         </select>
     </div>  

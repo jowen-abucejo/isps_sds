@@ -24,7 +24,7 @@ class StudentController extends Controller
         $currentStudent = auth()->user()->student;
         if($currentStudent){
             $this->validate($request, [
-                'student_id' => ['required', 'numeric', Rule::unique('students')->ignore('id', $currentStudent->id)],
+                'student_id' => ['required', 'numeric', Rule::unique('students')->ignore($currentStudent->id)],
                 'course' => 'required',
                 'first_name' => 'required|string',
                 'middle_name' => 'required|string',

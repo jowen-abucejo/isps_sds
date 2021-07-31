@@ -22,7 +22,7 @@ class ScholarshipApplicationController extends Controller
     {
         $scholarship_code = strtoupper(str_replace('_', ' ', $request->scholarship_code));
         $scholarships = Scholarship::select('id')->where('scholarship_code', $scholarship_code)->get();
-        $applications = ScholarshipApplication::wherein('scholarship_id', $scholarships)->orderBy('created_at', 'asc')->get();
+        $applications = ScholarshipApplication::wherein('scholarship_id', $scholarships)->where('status', '=', 'PENDING')->orderBy('created_at', 'asc')->get();
         return view('su.applications', [
             'applications' => $applications, 
             'scholarship_code' => $scholarship_code, 
@@ -50,7 +50,15 @@ class ScholarshipApplicationController extends Controller
                 })->ignore($ignoreSelf),
             ],
             'year_level' => 'required',
-            'school_year' => 'required',
+            'school_year' => [
+                'required',
+                'max:9',
+                function($attribute, $value, $fail){
+                    $years = explode('-', $value);
+                    if((count($years) != 2) || ($years[1]-$years[0] != 1) || $years[1] > date('Y'))
+                        return $fail('Invalid school year.');
+                }
+            ],
             'semester' => 'required',
             'gpa' => [
                 'required',
@@ -79,7 +87,7 @@ class ScholarshipApplicationController extends Controller
         if($ignoreSelf === 0){
             $newSc = auth()->user()->student->scholarships()->create([
                 'scholarship_id' => $request->scholarship_id,
-                'student_id' => $request->user()->student->student_id,
+                'course_id' => $request->user()->student->course_id,
                 'year_level' => $request->year_level,
                 'sem' => $request->semester,
                 'sy' => $request->school_year,
@@ -90,10 +98,12 @@ class ScholarshipApplicationController extends Controller
                 'has_drop' => $request->has_drop,
             ]);
             foreach ($selectedScholarship->requirements as $requirement) {
-                $newSc->submitted_documents()->create([
-                    'requirement_id' => $requirement->id,
-                    'status' => 'TO UPLOAD',
-                ]);
+                if($requirement->status === 'ACTIVE'){
+                    $newSc->submitted_documents()->create([
+                        'requirement_id' => $requirement->id,
+                        'status' => 'TO UPLOAD',
+                    ]);
+                }
             }
             return redirect()->route('student.requirements', ['sch_id' => $newSc->id]);
         }
@@ -101,6 +111,7 @@ class ScholarshipApplicationController extends Controller
         $updateSc = auth()->user()->student->scholarships()->where('id', $ignoreSelf)->first();
         $updateSc->update([
             'scholarship_id' => $request->scholarship_id,
+            'course_id' => $request->user()->student->course_id,
             'year_level' => $request->year_level,
             'sem' => $request->semester,
             'sy' => $request->school_year,
