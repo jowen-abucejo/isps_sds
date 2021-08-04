@@ -15,12 +15,10 @@
         <!-- Scripts -->
         <script src="{{ asset('js/jquery-3.4.1.js') }}"></script>
         <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    @if(Route::currentRouteName() == 'su.dashboard')
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.25/b-1.7.1/b-html5-1.7.1/b-print-1.7.1/datatables.min.css"/>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.25/b-1.7.1/b-html5-1.7.1/b-print-1.7.1/datatables.min.js"></script>
-    @endif
     </head>
 
     <body class="{{ (Route::currentRouteName() == 'home')? 'bg-white' : 'bg-warning'  }}">
@@ -61,10 +59,12 @@
                         @if(auth()->user()->isAdmin())
                             <a href="{{ route('su.dashboard') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'su.dashboard') active @endif ">DASHBOARD</a>
                             <a href="{{ route('su.courses') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'su.courses') active @endif ">CVSU-NAIC PROGRAM REGISTRY</a>
-                            <a href="{{ route('su.scholarships') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'su.scholarships') active @endif ">NEW SCHOLARSHIPS</a>
-                            <a href="{{ route('su.requirements') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'su.requirements') active @endif ">ADD REQUIREMENTS</a>
-                            <a href="{{ route('su.downloadables') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'su.downloadables') active @endif ">ADD DOWNLOADABLES</a>                    
-                        @elseif(auth()->user()->student)
+                            <a href="{{ route('su.downloadables') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'su.downloadables') active @endif ">DOWNLOADABLES</a>                    
+                            <a href="{{ route('su.enrollees') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'su.enrollees') active @endif ">ENROLLEES</a>
+                            <a href="{{ route('su.requirements') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'su.requirements') active @endif ">REQUIREMENTS</a>
+                            <a href="{{ route('su.scholarships') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'su.scholarships') active @endif ">SCHOLARSHIPS</a>
+                            <a href="{{ route('su.users') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'su.users') active @endif ">USER ACCOUNTS</a>                    
+                            @elseif(auth()->user()->student)
                             <a href="{{ route('student.dashboard') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'student.dashboard') active @endif ">DASHBOARD</a>
                             <a href="{{ route('student.profile') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'student.profile') active @endif ">PROFILE</a>
                             <a href="{{ route('student.scholarships') }}" class="dropdown-item-custom text-center  @if(Route::currentRouteName() == 'student.scholarships') active @endif ">MY SCHOLARSHIPS </a>
@@ -166,9 +166,11 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">SETTINGS</a>
                         
                         <div class="dropdown-menu bg-secondary shadow text-wrap text-center w-100">
-                            <a href="{{ route('su.scholarships') }}" class="dropdown-item-custom text-wrap small  @if(Route::currentRouteName() == 'su.scholarships') active @endif ">SCHOLARSHIPS</a>
-                            <a href="{{ route('su.requirements') }}" class="dropdown-item-custom text-wrap small  @if(Route::currentRouteName() == 'su.requirements') active @endif ">REQUIREMENTS</a>
                             <a href="{{ route('su.downloadables') }}" class="dropdown-item-custom text-wrap small  @if(Route::currentRouteName() == 'su.downloadables') active @endif ">DOWNLOADABLES</a>
+                            <a href="{{ route('su.enrollees') }}" class="dropdown-item-custom text-wrap small  @if(Route::currentRouteName() == 'su.enrollees') active @endif ">ENROLLEES</a>
+                            <a href="{{ route('su.requirements') }}" class="dropdown-item-custom text-wrap small  @if(Route::currentRouteName() == 'su.requirements') active @endif ">REQUIREMENTS</a>
+                            <a href="{{ route('su.scholarships') }}" class="dropdown-item-custom text-wrap small  @if(Route::currentRouteName() == 'su.scholarships') active @endif ">SCHOLARSHIPS</a>
+                            <a href="{{ route('su.users') }}" class="dropdown-item-custom text-wrap small  @if(Route::currentRouteName() == 'su.users') active @endif ">USER ACCOUNTS</a>
                         </div>
                     </li>
                     @elseif(auth()->user()->student)
@@ -212,7 +214,7 @@
             </div>    
             @endauth
             @endif
-            <div class="d-flex flex-column justify-content-start align-items-center w-100">
+            <div class="d-flex flex-column justify-content-start align-items-center @if(Route::currentRouteName() == 'su.dashboard') col-lg-9 col-xl-10 col-12 m-0 @else w-100 @endif">
                 <div class="mb-5 pb-5" id="logo">
                     &nbsp;
                 </div>                

@@ -31,6 +31,6 @@ class SignInController extends Controller
 
     public function signout(Request $request){
         Auth::logout(auth()->user());
-        return view('auth.signin');
+        return redirect()->route('auth.signin');
    }
 }

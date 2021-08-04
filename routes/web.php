@@ -12,8 +12,10 @@ use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Su\AdminDashboardController;
 use App\Http\Controllers\Su\CourseController;
+use App\Http\Controllers\Su\EnrolleeController;
 use App\Http\Controllers\Su\RequirementController;
 use App\Http\Controllers\Su\ScholarshipController;
+use App\Http\Controllers\Su\UserController;
 use App\Models\Downloadable;
 use Illuminate\Support\Facades\Route;
 
@@ -30,8 +32,7 @@ use Illuminate\Support\Facades\Route;
 
 //----------------------Home--------------------
 Route::get('/', function () { return view('welcome'); })->name('home');
-Route::get('/home', function () { return view('welcome'); });
-Route::get('/signout', function(){ return view('welcome'); });
+Route::get('/home', function () { return redirect()->route('home'); });
 
 //----------------------Signout--------------------
 Route::post('/signout', [SignInController::class, 'signout'])->name('auth.signout');
@@ -113,3 +114,12 @@ Route::get('/su/manage/{scholarship_code}/{application_id?}', [ScholarshipApplic
 Route::post('/su/manage/approve', [ScholarshipApplicationController::class, 'manageApplication'])->name('su.manage.approved');
 Route::patch('/su/manage', [ScholarshipApplicationController::class, 'delete']);
 Route::get('/su/preview/requirements/{application_id}/{document_id}', [ScholarshipApplicationController::class, 'preview'])->name('su.requirement.preview');
+
+//------------------------------Users--------------------------------
+Route::get('/su/users/{user_id?}', [UserController::class, 'index'])->name('su.users');
+Route::post('/su/users', [UserController::class, 'update']);
+
+//------------------------------Enrollees--------------------------------
+Route::get('/su/enrollees', [EnrolleeController::class, 'index'])->name('su.enrollees');
+Route::post('/su/enrollees', [EnrolleeController::class, 'edit']);
+Route::patch('/su/enrollees', [EnrolleeController::class, 'save']);

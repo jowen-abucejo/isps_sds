@@ -85,11 +85,17 @@
 
 @section('js_area')
 <script>
+    $('#hmenus li a').on('click', function(){
+        parent = $(this).parent().parent();
+        parent.find('li a.active').removeClass('active');
+        $(this).addClass('active');
+    })
     var url = window.location.href;
     var index = url.indexOf('#');
     var active = url.substring(index);
-    (index > 0)
-        ? $('#hmenus').find('a[href="{{ route("home") }}'+active+'"]').addClass('active')
-        : $('#hmenus').find('a[href="{{ route("home") }}"]').addClass('active')
+    if(index > 0)
+        $('#hmenus').find('a[href="{{ route("home") }}'+active+'"]').addClass('active')
+     else
+        $('#hmenus').find('a[href="{{ route("home") }}"]').addClass('active')
 </script>
 @endsection

@@ -26,6 +26,8 @@ class ScholarshipController extends Controller
         $ignoreSelf = ($request->toUpdate)?? 0;
         if(!$request->gpa_max) $request->gpa_max = 1;
         if(!$request->gpa_min) $request->gpa_min = 5;
+        if(!$request->lowest_grade) $request->lowest_grade = 5;
+        if(!$request->num_of_units) $request->num_of_units = 0;
         $this->validate($request, [
             'scholarship_code' => [
                 'required',
@@ -81,8 +83,8 @@ class ScholarshipController extends Controller
         if($success){
             $success->qualification->update([
                 
-            'gpa_max' => $request->gpa_max,
-            'gpa_min' => $request->gpa_min,
+                'gpa_max' => $request->gpa_max,
+                'gpa_min' => $request->gpa_min,
             'lowest_grade' => $request->lowest_grade,
             'minimum_units' => $request->minimum_units,
             'allow_inc' => ($request->allow_inc)? 1 : 0,

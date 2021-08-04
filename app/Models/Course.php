@@ -23,4 +23,9 @@ class Course extends Model
     public function applications(){
         return $this->hasMany(ScholarshipApplication::class);
     }
+
+    public function enrollees()
+    {
+        return $this->hasMany(Enrollee::class);
+    }
 }

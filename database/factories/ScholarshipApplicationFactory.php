@@ -27,13 +27,13 @@ class ScholarshipApplicationFactory extends Factory
             'course_id' => $this->faker->numberBetween(1, 11),
             'year_level' => $this->faker->numberBetween(1, 4),
             'sem' => $this->faker->numberBetween(1, 2),
-            'sy' => $this->faker->randomElement(['2015-2016', '2016-2017','2017-2018','2018-2019','2019-2020','2020-2021']),
+            'sy' => $this->faker->randomElement(['2018-2019','2019-2020','2020-2021']),
             'gpa' => $this->faker->randomFloat(3, 1, 2),
             'lowest_grade' => $this->faker->randomFloat(3, 1, 3), 
             'num_of_units' => $this->faker->numberBetween(20, 30),
             'has_inc' => $this->faker->numberBetween(0, 1),
             'has_drop' => $this->faker->numberBetween(0, 1),
-            'status' => $this->faker->randomElement(['REQUIREMENTS FOR UPLOAD', 'PENDING', 'OK']),
+            'status' => $this->faker->randomElement(['OK']),
         ];
     }
 }

@@ -3,7 +3,11 @@
 @section('active_view')
 <div class="col text-center">
     <h4>Student Financial Assistance Grantees</h4>
+    @if(false)
+    <h6 class="alert-danger py-1">{{ $no_records }}</h6>
+    @else
     <h6>{{ ($filter['sem'] == 1)? 'FIRST SEMESTER, SY ' : 'SECOND SEMESTER, SY ' }}{{ $filter['sy'] }}</h6>
+    @endif
 </div>
 @if (session('status'))
     <p class="alert-danger rounded p-1"> {{ session('status') }} </p>   
@@ -13,13 +17,13 @@
 @php
     $cCount = $courses->count();
     $sCount = $scholarships->count();
-    $column_width = round(100.0/($sCount+4), 2, PHP_ROUND_HALF_DOWN);
+    $column_width = round(100.0/($sCount+5), 2, PHP_ROUND_HALF_DOWN);
 @endphp
 
 @section('bottom_view')
 <table class="table table-hover text-center table-sm table-striped table-light small">
     <tr class="bg-secondary text-light">
-        <td colspan="{{ $sCount+3 }}">
+        <td colspan="{{ $sCount+5 }}">
             <form action="{{ route('su.dashboard') }}" method="GET">
             <div class="form-inline float-sm-left  border m-1 py-1 rounded">
                 <div class="form-group mb-0 mx-2 my-1">  
@@ -48,15 +52,16 @@
         </td>
     </tr>
 </table>
-<table class="table table-hover text-center table-sm table-striped table-light small shadow" id="printable">
+<table class="table table-hover text-center table-sm table-striped table-light shadow" id="printable">
     <thead>
         <tr class="bg-dark text-light">
-            <th style="width: {{ $column_width*2 }}%; vertical-align:middle; " >PROGRAM/COURSE</th> 
-            <th style="width: {{ $column_width }}%; vertical-align:middle; " >MAJOR</th>
+            <th class="align-middle">PROGRAM/COURSE</th> 
+            <th class="align-middle">MAJOR</th>
+            <th class="align-middle">NO. OF ENROLLMENT @if($filter['sem'] == 1) 1st @else 2nd @endif SEM {{ $filter['sy'] }}</th>
             @foreach ($scholarships as $scholarship)
-            <th style="width: {{ $column_width }}%; vertical-align:middle; " >{{ ($scholarship->type)?:$scholarship->scholarship_code }} SCHOLARS</th>
+            <th class="align-middle">{{ ($scholarship->type)?:$scholarship->scholarship_code }} SCHOLARS</th>
             @endforeach 
-            <th style="width: {{ $column_width }}%; vertical-align:middle; " >Total</th>
+            <th class="align-middle">Total % of Student Financial Assistance Grantees</th>
         </tr>
     </thead>
     <tbody>
@@ -74,7 +79,7 @@
                         <td></td>
                     @endif
                     <td>{{ ($courses->get($i)->major)? Str::title($courses->get($i)->major) : '' }}</td>
-                
+                    <td>@if ($enrollees) {{ $enrollees->where('course_id', $courses->get($i)->id)->first()->enrollees_count }} @else 0 @endif</td>
                     @for ($j=0; $j < $sCount; $j++)
                         <td>
                             {{ ($a = $scholarships->get($j)->applications)? 
@@ -83,20 +88,31 @@
                             }}
                         </td>
                     @endfor
-                    <td class="border-left border-secondary border-top-0 border-bottom-0 border-right-0">
+                    {{-- <td class="border-left border-secondary border-top-0 border-bottom-0 border-right-0">
                         {{ $courses->get($i)->applications->where('sy', $filter['sy'])->where('sem', $filter['sem'])->where('status', $filter['status'])->count() }}
+                    </td> --}}
+                    @if ($i == (intval($cCount/2)))
+                    <td class="border-secondary border-left border-right border-top-0 bg-white align-middle h4">
+                        <b>@if($enrollees) {{ (round($grantees*100/$enrollees->sum('enrollees_count'), 2))?: round($grantees*100/$enrollees->sum('enrollees_count'), 4)  }}% @else 0% @endif</b>
                     </td>
+                    @else
+                    <td class="border-secondary border-left border-right border-top-0 bg-white">
+                    </td>
+                    @endif
                 </tr>
             @endfor  
             <tr>
                 <td class="text-right border-top border-secondary"> </td>
-                <td class="text-right border-top border-secondary" {{-- colspan="2" --}}><b>Total:</b></td>
+                <td class="text-right border-top border-secondary"><b>Total:</b></td>
+                <td class="border-top border-secondary">@if($enrollees) {{ $enrollees->sum('enrollees_count') }} @else 0 @endif</td>
                 @for ($j=0; $j<$sCount; $j++)
                     <td class="border-top border-secondary">
                         {{ $scholarships->get($j)->applications->where('sy', $filter['sy'])->where('sem', $filter['sem'])->where('status', $filter['status'])->count() }}
                     </td>
                 @endfor
-                <td class="border-top border-left border-secondary"><b>{{ $grantees }}</b></td>
+                {{-- <td class="border-top border-left border-secondary"><b>{{ $grantees }}</b></td> --}}
+                <td class="border-secondary border-left border-right border-top-0 bg-white align-middle">
+                </td>
             </tr>   
         @endif
     </tbody>
