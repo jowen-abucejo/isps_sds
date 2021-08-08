@@ -34,7 +34,7 @@ class AdminDashboardController extends Controller
                 $filter['sy'] = $get_latest_period->sy;
                 $filter['sem'] = $get_latest_period->sem;
             }
-            $grantees = ScholarshipApplication::where('sy', $filter['sy'])->where('sem', $filter['sem'])->where('status', $filter['status'])->count();
+            $grantees = ScholarshipApplication::where('sy', $filter['sy'])->where('sem', $filter['sem'])->where('status', $filter['status'])->get();
             $enrollees = Enrollee::groupBy('course_id')->selectRaw('course_id, SUM(num_of_enrollee) as enrollees_count' )->where('sy', $filter['sy'])->where('sem', $filter['sem'])->get();
             $courses = ($enrollees)? Course::whereIn('id', $enrollees->pluck('course_id'))->get() : Course::where('active', 'ACTIVE')->get();            ;
             return view('su.dashboard', ['courses' => $courses, 'scholarships' => $scholarships, 'filter' => $filter, 'grantees' =>$grantees, 'sy_list' => $sy_list, 'enrollees' => $enrollees ]);

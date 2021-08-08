@@ -93,7 +93,7 @@
                     </td> --}}
                     @if ($i == (intval($cCount/2)))
                     <td class="border-secondary border-left border-right border-top-0 bg-white align-middle h4">
-                        <b>@if($enrollees) {{ (round($grantees*100/$enrollees->sum('enrollees_count'), 2))?: round($grantees*100/$enrollees->sum('enrollees_count'), 4)  }}% @else 0% @endif</b>
+                        <b>@if($enrollees) {{ (round($grantees->count()*100/$enrollees->sum('enrollees_count'), 2))?: round($grantees->count()*100/$enrollees->sum('enrollees_count'), 4)  }}% @else 0% @endif</b>
                     </td>
                     @else
                     <td class="border-secondary border-left border-right border-top-0 bg-white">
@@ -114,6 +114,41 @@
                 <td class="border-secondary border-left border-right border-top-0 bg-white align-middle">
                 </td>
             </tr>   
+        @endif
+    </tbody>
+</table>
+
+<table class="table table-hover text-center table-sm table-striped table-light small mt-5">
+    <tr class="bg-secondary text-light">
+        <td colspan="{{ $sCount+5 }}">
+            <div class="form-inline float-sm-left p-2 border m-1 py-1 rounded" id="filterDiv"></div>
+            <div class="form-inline float-md-right float-left border my-1 mx-1 py-1 rounded shadow" id="exportbtns2">     
+                <div class="form-group mb-0 mx-2">  
+                    <span>Export or Copy</span>
+                </div>  
+            </div>
+        </td>
+    </tr>
+</table>
+<table class="table table-hover text-center table-sm table-striped table-light shadow" id="printable2">
+    <thead>
+        <tr class="bg-dark text-light">
+            <th class="align-middle">STUDENT ID</th> 
+            <th class="align-middle">NAME</th>
+            <th class="align-middle">COURSE/PROGRAM</th> 
+            <th class="align-middle">SCHOLARSHIPS</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if($grantees)
+        @foreach ($grantees as $grantee)
+        <tr>
+            <td>{{ $grantee->student->student_id }}</td>
+            <td>{{ $grantee->student->first_name }} {{ $grantee->student->middle_name }} {{ $grantee->student->last_name }}</td>
+            <td>{{ $grantee->course->course_code }} {{ $grantee->year_level }}</td>
+            <td>{{ $grantee->scholarship->scholarship_code }} {{ $grantee->scholarship->type }}</td>
+        </tr>
+        @endforeach
         @endif
     </tbody>
 </table>
@@ -151,5 +186,35 @@
             "info":     false,
             });
             table.buttons().container().appendTo('#exportbtns');
+
+            var table2 = $('#printable2').DataTable({
+            dom: 'Blfrtip',
+            // buttons: [
+            //     'copy', 'csv', 'excel', 'pdf', 'print'
+            // ],
+            buttons: {
+                buttons: [
+                    { extend: 'copy', className: 'btn-sm btn-info p-0 px-3 m-1 ml-2 border border-light' },
+                    { extend: 'csv', className: 'btn-sm btn-light p-0 px-3 m-1 border border-light' },
+                    { extend: 'excel', className: 'btn-sm btn-success p-0 px-3 m-1 border border-light' },
+                    { extend: 'pdf', className: 'btn-sm btn-danger p-0 px-3 m-1 border border-light' },
+                    { extend: 'print', className: 'btn-sm btn-primary p-0 px-3 m-1 mx-2 border border-light' },
+                ],
+                dom: {
+                    button: {
+                        className: 'btn'
+                    },
+                    buttonLiner: {
+                        tag: null
+                    }
+                }
+            },
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "paging":   true,
+            "ordering": false,
+            "info":     true,
+            });
+            table2.buttons().container().appendTo('#exportbtns2');
+            $('#printable2_filter').appendTo('#filterDiv');
     </script>
 @endsection
